@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
       timer: 1500,
       showConfirmButton: false,
     }).then(() => {
-      navigate('/login');
+      navigate('/');
     });
   };
 

@@ -45,3 +45,24 @@ export const uploadImage = async (file: File): Promise<string | null> => {
   }
 };
 
+export const getProductsByCategory = async (categoryId: number): Promise<FormProduct[]> => {
+  try {
+    console.log('Fetching products for category:', categoryId);
+    const response = await axios.get(`http://localhost:3000/product/category/${categoryId}`, {
+      timeout: 5000
+    });
+
+    console.log('Products response:', response.data);
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      console.warn(`Category ${categoryId} not found. Returning empty list.`);
+      return [];
+    }
+
+    console.error('Error fetching products by category:', error);
+    throw new Error('ไม่สามารถดึงข้อมูลสินค้าได้');
+  }
+};
+
+

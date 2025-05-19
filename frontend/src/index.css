@@ -1,1 +1,11 @@
 @import "tailwindcss";
+a {
+  text-decoration: none; /* ลบขีดเส้นใต้ */
+  
+}
+
+a:hover {
+  text-decoration: none; /* ลบขีดเส้นใต้เมื่อ hover */
+  /* เพิ่มสไตล์ hover ถ้าต้องการ เช่น เปลี่ยนสี */
+  /* color: #9333ea; */
+}

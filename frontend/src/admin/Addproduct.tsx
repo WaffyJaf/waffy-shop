@@ -4,6 +4,7 @@ import { FormProduct } from '../type/product.ts';
 import Swal from 'sweetalert2';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { getAllCategories, Category } from '../api/categoryapi.ts';
+import Navbar from '../component/Navbar.tsx';
 
 const AddProductPage: React.FC = () => {
   const { 
@@ -163,158 +164,179 @@ const AddProductPage: React.FC = () => {
 
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 text-center">เพิ่มสินค้าใหม่</h1>
-        
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Product Name */}
-          <div className="mb-4">
-            <label htmlFor="name" className="block mb-2 font-medium">
-              ชื่อสินค้า <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="name"
-              {...register("name", { required: "กรุณากรอกชื่อสินค้า" })}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.name ? "border-red-500" : ""
-              }`}
-              placeholder="กรอกชื่อสินค้า"
-              aria-describedby={errors.name ? "name-error" : undefined}
-            />
-            {errors.name && (
-              <p id="name-error" className="mt-1 text-red-500 text-sm">{errors.name.message}</p>
-            )}
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900  to-sky-900">
+      <Navbar />
+      <div className="max-w-5xl mx-auto mt-12 p-8 bg-white rounded-2xl shadow-xl">
+        <span className="text-4xl font-bold  text-center text-gray-900 tracking-tight">
+          เพิ่มสินค้าใหม่
+          <i className="fa-solid fa-plus ml-3"></i>
+        </span>
 
-          {/* Product Description */}
-          <div className="mb-4">
-            <label htmlFor="description" className="block mb-2 font-medium">
-              รายละเอียดสินค้า
-            </label>
-            <textarea
-              id="description"
-              {...register("description")}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="กรอกรายละเอียดสินค้า"
-              rows={4}
-            />
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 mt-6">
+          {/* Section: Basic Info */}
+          <div className="bg-gray-100 p-6 rounded-xl shadow-sm">
+            <span className="text-xl font-semibold mb-4 text-gray-800">ข้อมูลพื้นฐาน</span>
+            <div className="grid grid-cols-1 gap-6">
+              {/* Product Name */}
+              <div>
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
+                  ชื่อสินค้า <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="name"
+                  {...register('name', { required: 'กรุณากรอกชื่อสินค้า' })}
+                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
+                    errors.name ? 'border-red-500 shadow-sm' : 'hover:shadow-md'
+                  }`}
+                  placeholder="กรอกชื่อสินค้า"
+                  aria-describedby={errors.name ? 'name-error' : undefined}
+                />
+                {errors.name && (
+                  <p id="name-error" className="mt-1 text-red-500 text-sm">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
 
-          {/* Product Price and Stock */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label htmlFor="price" className="block mb-2 font-medium">
-                ราคา (บาท) <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="number"
-                id="price"
-                {...register("price", { 
-                  required: "กรุณากรอกราคาสินค้า",
-                  min: { value: 0.01, message: "ราคาสินค้าต้องมากกว่า 0" }
-                })}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.price ? "border-red-500" : ""
-                }`}
-                placeholder="0.00"
-                step="0.01"
-              />
-              {errors.price && (
-                <p className="mt-1 text-red-500 text-sm">{errors.price.message}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="stock" className="block mb-2 font-medium">
-                จำนวนในคลัง <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="number"
-                id="stock"
-                {...register("stock", { 
-                  required: "กรุณากรอกจำนวนสินค้า",
-                  min: { value: 0, message: "จำนวนสินค้าต้องไม่ต่ำกว่า 0" }
-                })}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.stock ? "border-red-500" : ""
-                }`}
-                placeholder="0"
-              />
-              {errors.stock && (
-                <p className="mt-1 text-red-500 text-sm">{errors.stock.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Category */}
-          <div className="mb-4">
-            <label htmlFor="category_id" className="block mb-2 font-medium">
-              หมวดหมู่ <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="category_id"
-              {...register("category_id", {
-                required: "กรุณาเลือกหมวดหมู่",
-                validate: (value) => Number(value) > 0 || "กรุณาเลือกหมวดหมู่",
-              })}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.category_id ? "border-red-500" : ""
-              }`}
-            >
-              <option value="">เลือกหมวดหมู่</option>
-              {Array.isArray(categories) && categories.length > 0 ? (
-                categories.map((category) => (
-                  <option key={category.id_categories} value={category.id_categories}>
-                    {category.name}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  ไม่มีหมวดหมู่
-                </option>
-              )}
-            </select>
-            {errors.category_id && (
-              <p className="mt-1 text-red-500 text-sm">{errors.category_id.message}</p>
-            )}
-          </div>
-
-          {/* Image Upload */}
-          <div className="mb-6">
-            <label htmlFor="image" className="block mb-2 font-medium">
-              รูปภาพสินค้า <span className="text-red-500">*</span>
-            </label>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={handleUploadButtonClick}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                เลือกรูปภาพ
-              </button>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-              <input 
-                type="hidden" 
-                {...register("image_url")} 
-              />
-            </div>
-            {imagePreview && (
-              <div className="mt-2">
-                <p className="mb-1 text-sm">ตัวอย่างรูปภาพ:</p>
-                <img 
-                  src={imagePreview} 
-                  alt="Product preview" 
-                  className="h-40 object-contain border rounded-md"
+              {/* Product Description */}
+              <div>
+                <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-700">
+                  รายละเอียดสินค้า
+                </label>
+                <textarea
+                  id="description"
+                  {...register('description')}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow hover:shadow-md"
+                  placeholder="กรอกรายละเอียดสินค้า"
+                  rows={5}
                 />
               </div>
-            )}
+            </div>
+          </div>
+
+          {/* Section: Pricing and Stock */}
+          <div className="bg-gray-100 p-6 rounded-xl shadow-sm">
+            <span className="text-xl font-semibold mb-4 text-gray-800">ราคาและสต็อก</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Product Price */}
+              <div>
+                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-700">
+                  ราคา (บาท) <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="price"
+                  {...register('price', {
+                    required: 'กรุณากรอกราคาสินค้า',
+                    min: { value: 0.01, message: 'ราคาสินค้าต้องมากกว่า 0' },
+                  })}
+                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
+                    errors.price ? 'border-red-500 shadow-sm' : 'hover:shadow-md'
+                  }`}
+                  placeholder="0.00"
+                  step="0.01"
+                />
+                {errors.price && (
+                  <p className="mt-1 text-red-500 text-sm">{errors.price.message}</p>
+                )}
+              </div>
+
+              {/* Product Stock */}
+              <div>
+                <label htmlFor="stock" className="block mb-2 text-sm font-medium text-gray-700">
+                  จำนวนในคลัง <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="stock"
+                  {...register('stock', {
+                    required: 'กรุณากรอกจำนวนสินค้า',
+                    min: { value: 0, message: 'จำนวนสินค้าต้องไม่ต่ำกว่า 0' },
+                  })}
+                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
+                    errors.stock ? 'border-red-500 shadow-sm' : 'hover:shadow-md'
+                  }`}
+                  placeholder="0"
+                />
+                {errors.stock && (
+                  <p className="mt-1 text-red-500 text-sm">{errors.stock.message}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Section: Category and Image */}
+          <div className="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <span className="text-xl font-semibold mb-4 text-gray-800">หมวดหมู่และรูปภาพ</span>
+            <div className="grid grid-cols-1 gap-6">
+              {/* Category */}
+              <div>
+                <label htmlFor="category_id" className="block mb-2 text-sm font-medium text-gray-700">
+                  หมวดหมู่ <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="category_id"
+                  {...register('category_id', {
+                    required: 'กรุณาเลือกหมวดหมู่',
+                    validate: (value) => Number(value) > 0 || 'กรุณาเลือกหมวดหมู่',
+                  })}
+                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
+                    errors.category_id ? 'border-red-500 shadow-sm' : 'hover:shadow-md'
+                  }`}
+                >
+                  <option value="">เลือกหมวดหมู่</option>
+                  {Array.isArray(categories) && categories.length > 0 ? (
+                    categories.map((category) => (
+                      <option key={category.id_categories} value={category.id_categories}>
+                        {category.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" disabled>
+                      ไม่มีหมวดหมู่
+                    </option>
+                  )}
+                </select>
+                {errors.category_id && (
+                  <p className="mt-1 text-red-500 text-sm">{errors.category_id.message}</p>
+                )}
+              </div>
+
+              {/* Image Upload */}
+              <div>
+                <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-700">
+                  รูปภาพสินค้า <span className="text-red-500">*</span>
+                </label>
+                <div className="flex items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={handleUploadButtonClick}
+                    className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                  >
+                    เลือกรูปภาพ
+                  </button>
+                  <input
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <input type="hidden" {...register('image_url')} />
+                </div>
+                {imagePreview && (
+                  <div className="mt-4 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <p className="mb-2 text-sm font-medium text-gray-600">ตัวอย่างรูปภาพ:</p>
+                    <img
+                      src={imagePreview}
+                      alt="Product preview"
+                      className="h-48 w-full object-contain rounded-md"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Submit Button */}
@@ -322,10 +344,10 @@ const AddProductPage: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`px-6 py-2 rounded-md text-white font-medium ${
-                isSubmitting 
-                  ? 'bg-gray-400 cursor-not-allowed' 
-                  : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              className={`px-8 py-3 rounded-lg text-white font-medium transition-all duration-200 ${
+                isSubmitting
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-md hover:shadow-lg'
               }`}
             >
               {isSubmitting ? 'กำลังดำเนินการ...' : 'เพิ่มสินค้า'}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { getAllCategories, createCategory, deleteCategory, Category } from '../api/categoryapi';
 import Swal from 'sweetalert2';
+import Navbar from '../component/Navbar';
 
 interface CategoryFormData {
   name: string;
@@ -145,12 +146,15 @@ const CategoryManagementPage: React.FC = () => {
   };
 
   return (
+    <div className="min-h-screen bg-gradient-to-r from-gray-950 to-sky-950 ">
+      <Navbar/>
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">จัดการหมวดหมู่สินค้า</h1>
+
       
       {/* Add Category Form */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">เพิ่มหมวดหมู่ใหม่</h2>
+        <span className="text-2xl font-semibold mb-4">เพิ่มหมวดหมู่ใหม่</span>
+        <i className="fa-solid fa-plus ml-3 fa-xl mb-4"></i>
         
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col md:flex-row gap-4">
           <div className="flex-grow">
@@ -184,7 +188,7 @@ const CategoryManagementPage: React.FC = () => {
       
       {/* Categories List */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">รายการหมวดหมู่</h2>
+        <span className="text-2xl font-semibold mb-4">รายการหมวดหมู่</span>
         
         {isLoading ? (
           <div className="flex justify-center items-center py-8">
@@ -196,17 +200,17 @@ const CategoryManagementPage: React.FC = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 mt-6">
+              <thead className="bg-gray-900">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xm font-medium text-gray-500 uppercase tracking-wider">
                     ไอดี
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xm font-medium text-gray-500 uppercase tracking-wider">
                     ชื่อหมวดหมู่
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    จัดการ
+                  <th className="px-6 py-3 text-right text-xm font-medium text-gray-500 uppercase tracking-wider">
+                  
                   </th>
                 </tr>
               </thead>
@@ -235,6 +239,7 @@ const CategoryManagementPage: React.FC = () => {
         )}
       </div>
     </div>
+  </div>
   );
 };
 

@@ -5,6 +5,7 @@ import Login from './component/LoginForm';
 import ProtectedRoute from './component/Protected';
 import {AuthProvider} from './component/AuthContext'
 import AdminRoleManager from './admin/Manageuser';
+import CategoryProductsPage from './page/categoryproduct'
 import HomePage from './page/Homepage';
 import AddProductPage from './admin/Addproduct'
 import CategoryManagementPage from './admin/Category'
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
   
         {/* เส้นทางที่ต้องมีการล็อกอินและตรวจ role */}
         <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
