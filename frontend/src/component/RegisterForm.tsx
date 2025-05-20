@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { RegisterData } from '../type/user';
+import { RegisterData, User } from '../type/user'; // Import User type
 import { registerUser } from '../api/authapi';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useAuth } from '../component/AuthContext';
 import axios from 'axios';
@@ -18,9 +17,7 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -28,12 +25,15 @@ const Register: React.FC = () => {
     e.preventDefault();
     try {
       const response = await registerUser(formData);
-      login(
-        response.token,
-        response.user.role || 'USER',
-        response.user.name,
-        response.user.email
-      );
+      const user: User = {
+        user_id: response.user.userId,
+        email: response.user.email,
+        name: response.user.name,
+        role: response.user.role || 'USER', 
+      };
+
+      
+      login(response.token, user);
 
       Swal.fire({
         icon: 'success',
@@ -42,7 +42,7 @@ const Register: React.FC = () => {
         timer: 2000,
         showConfirmButton: false,
       }).then(() => {
-        navigate('/login');
+        navigate('/login'); 
       });
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -62,7 +62,7 @@ const Register: React.FC = () => {
           Swal.fire({
             icon: 'error',
             title: 'Registration Failed',
-            text: 'Something went wrong. Please try again.',
+            text: 'เกิดข้อผิดพลาดบางอย่าง กรุณาลองใหม่',
           });
         }
       } else {
@@ -70,7 +70,7 @@ const Register: React.FC = () => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'An unexpected error occurred.',
+          text: 'เกิดข้อผิดพลาดที่ไม่คาดคิด',
         });
       }
     }
@@ -78,24 +78,17 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 to-sky-950 p-4">
-      {/* Navbar อยู่ด้านบน */}
       <Navbar />
-
       <div className="flex items-center justify-center min-h-[calc(100vh-64px)]">
         <div className="flex w-full max-w-3xl rounded-lg shadow-lg overflow-hidden mt-4">
-          {/* ฝั่งซ้าย: ฟอร์มลงทะเบียน */}
           <div className="bg-white p-8 w-1/2 flex flex-col items-center">
-            {/* โลโก้ Waffy Shop */}
             <div className="flex items-center justify-center mb-6">
               <h2 className="text-3xl font-bold text-gray-800">WAFFY SHOP</h2>
               <div className="ml-2">
                 <i className="fa-solid fa-gamepad fa-2xl text-amber-300"></i>
               </div>
             </div>
-
-            {/* ข้อความ "สมัครสมาชิก" */}
             <h3 className="text-xl font-semibold text-gray-700 mb-6">สมัครสมาชิก</h3>
-
             <form onSubmit={handleSubmit} className="w-full space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">ชื่อผู้ใช้</label>
@@ -147,8 +140,6 @@ const Register: React.FC = () => {
               </Link>
             </p>
           </div>
-
-          {/* ฝั่งขวา: ส่วนตกแต่ง */}
           <div className="bg-blue-800 bg-opacity-50 p-8 w-1/2 flex flex-col items-center justify-center">
             <img src="/logo_waffy.png" alt="Waffy Shop Logo" className="h-48 mb-4" />
             <p className="text-white text-center">ร้านขายไอดีเกมออนไลน์</p>

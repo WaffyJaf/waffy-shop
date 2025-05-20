@@ -6,6 +6,7 @@ export interface FormProduct{
   stock: number;
   image_url: string;
   category_id: number;
+  is_active: boolean;
 }
 
 export interface AddProductResponse {
@@ -19,6 +20,7 @@ export interface AddProductResponse {
     stock: number;
     image_url?: string;
     category_id?: number;
+    is_active: boolean;
   };
    data?: any;
 }

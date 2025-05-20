@@ -1,55 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LoginForm from '../component/LoginForm';
-import RegisterForm from '../component/RegisterForm';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-const AuthPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
-  const navigate = useNavigate();
-  
-  // ตรวจสอบว่ามีการล็อกอินอยู่แล้วหรือไม่
+type Role = 'ADMIN' | 'USER' | null;
+
+interface AuthContextType {
+  token: string | null;
+  role: Role;
+  username: string | null;
+  email: string | null;
+  user_id: number | null; 
+  login: (token: string, role: Role, username: string, email: string, user_id: number) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [token, setToken] = useState<string | null>(null);
+  const [role, setRole] = useState<Role>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [user_id, setUserId] = useState<number | null>(null); // เพิ่ม state สำหรับ user_id
+
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      navigate('/home');
-    }
-  }, [navigate]);
+    const storedToken = localStorage.getItem('token');
+    const storedRole = localStorage.getItem('role') as Role;
+    const storedUsername = localStorage.getItem('name');
+    const storedEmail = localStorage.getItem('email');
+    const storedUserId = localStorage.getItem('user_id');
+
+    if (storedToken) setToken(storedToken);
+    if (storedRole) setRole(storedRole);
+    if (storedUsername) setUsername(storedUsername);
+    if (storedEmail) setEmail(storedEmail);
+    if (storedUserId) setUserId(Number(storedUserId));
+  }, []);
+
+  const login = (token: string, role: Role, username: string, email: string, user_id: number) => {
+    setToken(token);
+    setRole(role);
+    setUsername(username);
+    setEmail(email);
+    setUserId(user_id);
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', role || '');
+    localStorage.setItem('name', username);
+    localStorage.setItem('email', email);
+    localStorage.setItem('user_id', String(user_id));
+  };
+
+  const logout = () => {
+    setToken(null);
+    setRole(null);
+    setUsername(null);
+    setEmail(null);
+    setUserId(null);
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('name');
+    localStorage.removeItem('email');
+    localStorage.removeItem('user_id');
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">การยืนยันตัวตนผู้ใช้</h1>
-      
-      <div className="bg-white rounded-lg shadow-md w-full max-w-md overflow-hidden">
-        {/* Tab Selector */}
-        <div className="flex text-lg border-b">
-          <button
-            className={`flex-1 py-3 font-medium transition-colors ${
-              activeTab === 'login' 
-                ? 'bg-blue-500 text-white' 
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-            }`}
-            onClick={() => setActiveTab('login')}
-          >
-            เข้าสู่ระบบ
-          </button>
-          <button
-            className={`flex-1 py-3 font-medium transition-colors ${
-              activeTab === 'register' 
-                ? 'bg-blue-500 text-white' 
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-            }`}
-            onClick={() => setActiveTab('register')}
-          >
-            สมัครสมาชิก
-          </button>
-        </div>
-
-        {/* Form Container */}
-        <div className="p-6">
-          {activeTab === 'login' ? <LoginForm /> : <RegisterForm />}
-        </div>
-      </div>
-    </div>
+    <AuthContext.Provider value={{ token, role, username, email, user_id, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
-export default AuthPage;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

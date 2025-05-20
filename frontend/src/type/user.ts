@@ -12,7 +12,7 @@ export interface LoginData {
 export interface AuthResponse {
   token: string;
   user: {
-    user_id: number;
+    userId: number;
     email: string;
     name: string;
     role: UserRole;

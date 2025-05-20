@@ -3,6 +3,7 @@ import { UserRole, User } from '../type/user';
 import { updateUserRole, getUsers , deleteUser } from '../api/admin';
 import Swal from 'sweetalert2';
 import Navbar from '../component/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const userRoleOptions = [
   { value: 'USER', label: 'ผู้ใช้' },
@@ -13,6 +14,7 @@ const AdminRoleManager: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -108,7 +110,9 @@ const AdminRoleManager: React.FC = () => {
             text: 'ลบผู้ใช้เรียบร้อย',
             confirmButtonText: 'ตกลง',
             confirmButtonColor: '#9333ea',
-          });
+           }).then(() => {
+        navigate('/'); 
+      });
           getUsers();
         } catch (error) {
           console.error('เกิดข้อผิดพลาดในการลบผู้ใช้:', error);
@@ -141,13 +145,17 @@ const AdminRoleManager: React.FC = () => {
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white py-12 px-4">
+    
+     
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-sky-900">
+        <Navbar />
         <div className="container mx-auto">
-          <h1 className="text-3xl font-bold text-gray-500 mb-8 text-center drop-shadow-md">
-            จัดการบทบาทผู้ใช้
-          </h1>
+          <div className="flex justify-between items-center mb-8 mt-10">
+            <span className="text-3xl font-bold text-white flex items-center ">
+              <i className="fa-solid fa-user mr-3 text-amber-300"></i> จัดการบทบาทผู้ใช้
+            </span>
+          
+          </div>
 
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="overflow-x-auto">
@@ -204,7 +212,7 @@ const AdminRoleManager: React.FC = () => {
 
         </div>
       </div>
-    </>
+    
   );
 };
 

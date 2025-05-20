@@ -1,19 +1,24 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../component/AuthContext'; // เปลี่ยน path ตามจริง
+import { useAuth } from '../component/AuthContext';
 
 interface ProtectedRouteProps {
   allowedRoles: ('ADMIN' | 'USER')[];
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
-  const { token, role } = useAuth();
+  const { token, user, isLoading } = useAuth();
+
+
+  if (isLoading) {
+    return <div>Loading...</div>; 
+  }
 
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  if (role && !allowedRoles.includes(role)) {
+  if (!user || !allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 

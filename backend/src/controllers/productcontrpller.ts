@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
       if (extname && mimetype) {
         return cb(null, true); // อนุญาตให้ไฟล์ที่เป็นภาพ
       } else {
-        return cb(new Error("Only image files are allowed!")); // ถ้าไม่ใช่ไฟล์ภาพจะให้เกิดข้อผิดพลาด
+        return cb(new Error("ไม่ใช่ไฟล์รูปภาพ !")); // ถ้าไม่ใช่ไฟล์ภาพจะให้เกิดข้อผิดพลาด
       }
     },
   }).single("image"); 
@@ -167,6 +167,100 @@ export const getProduct = async (req: Request, res: Response) => {
     console.error('Error fetching products by category:', error);
     return res.status(500).json({
       message: 'เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const product = await prisma.products.findUnique({
+      where: { id_products: Number(id) },
+      select: {
+        id_products: true,
+        name: true,
+        description: true,
+        price: true,
+        stock: true,
+        image_url: true,
+        category_id: true,
+        is_active: true,
+      },
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: 'ไม่พบสินค้าที่ต้องการ' });
+    }
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:', error);
+    return res.status(500).json({
+      message: 'เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const product = await prisma.products.findUnique({
+      where: { id_products: Number(id) },
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: 'ไม่พบสินค้าที่ต้องการลบ' });
+    }
+
+    await prisma.products.delete({
+      where: { id_products: Number(id) },
+    });
+
+    return res.status(200).json({ message: 'ลบสินค้าสำเร็จ' });
+  } catch (error) {
+    console.error('เกิดข้อผิดพลาดในการลบสินค้า:', error);
+    return res.status(500).json({
+      message: 'เกิดข้อผิดพลาดในการลบสินค้า',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, description, price, stock, image_url, category_id, is_active } = req.body;
+
+    const product = await prisma.products.findUnique({
+      where: { id_products: Number(id) },
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: 'ไม่พบสินค้าที่ต้องการอัปเดต' });
+    }
+
+    const updatedProduct = await prisma.products.update({
+      where: { id_products: Number(id) },
+      data: {
+        name,
+        description,
+        price: Number(price),
+        stock: Number(stock),
+        image_url,
+        category_id: Number(category_id),
+        is_active: Boolean(is_active),
+      },
+    });
+
+    return res.status(200).json({ message: 'อัปเดตสินค้าสำเร็จ', product: updatedProduct });
+  } catch (error) {
+    console.error('เกิดข้อผิดพลาดในการอัปเดตสินค้า:', error);
+    return res.status(500).json({
+      message: 'เกิดข้อผิดพลาดในการอัปเดตสินค้า',
       error: error instanceof Error ? error.message : error,
     });
   }

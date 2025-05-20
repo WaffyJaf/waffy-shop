@@ -24,7 +24,7 @@ export const AddProducts = async (data: FormProduct): Promise<AddProductResponse
   }
 };
 
-export const uploadImage = async (file: File): Promise<string | null> => {
+export const uploadImage = async (file: File): Promise<string> => {
   console.log('Starting uploadImage with file:', file.name);
   const uploadData = new FormData();
   uploadData.append("image", file);
@@ -65,4 +65,37 @@ export const getProductsByCategory = async (categoryId: number): Promise<FormPro
   }
 };
 
+export const getProducts = async (): Promise<FormProduct[]> => {
+  try {
+    const response = await axios.get("http://localhost:3000/product/getproduct");
+    return response.data;
+  } catch (error) {
+    throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า');
+  }
+};
 
+export const getProductById = async (id: number): Promise<FormProduct> => {
+  try {
+    const response = await axios.get(`http://localhost:3000/product/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า');
+  }
+};
+
+export const deleteProduct = async (id: number): Promise<void> => {
+  try {
+    await axios.delete(`http://localhost:3000/product/delete/${id}`);
+  } catch (error) {
+    throw new Error('เกิดข้อผิดพลาดในการลบสินค้า');
+  }
+};
+
+export const updateProduct = async (id: number, product:FormProduct): Promise<void> => {
+  try {
+    await axios.put(`http://localhost:3000/product/update/${id}`, product);
+  } catch (error) {
+    throw new Error('เกิดข้อผิดพลาดในการอัปเดตสินค้า');
+  }
+
+};

@@ -9,6 +9,9 @@ import CategoryProductsPage from './page/categoryproduct'
 import HomePage from './page/Homepage';
 import AddProductPage from './admin/Addproduct'
 import CategoryManagementPage from './admin/Category'
+import ManageProduct from './admin/Manageproduct';
+import EditProduct from './admin/Editproduct';
+import Cart from './page/cart';
 
 const App: React.FC = () => {
   return (
@@ -26,11 +29,13 @@ const App: React.FC = () => {
           <Route path="/manageuser" element={<AdminRoleManager />} />
           <Route path="/addproductr" element={<AddProductPage />} />
           <Route path="/category" element={<CategoryManagementPage />} />
+          <Route path="/manageproduct" element={<ManageProduct />} />
+          <Route path="/edit/:id" element={<EditProduct />} />
           <Route path="/manage-users" element={<div>Manage Users</div>} />
         </Route>
   
         <Route element={<ProtectedRoute allowedRoles={['USER']} />}>
-          <Route path="/cart" element={<div>User Cart</div>} />
+          <Route path="/cart" element={<Cart />} />
         </Route>
   
         {/* เส้นทางอื่น ๆ ที่ไม่เจอ */}

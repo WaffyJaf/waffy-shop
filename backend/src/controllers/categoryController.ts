@@ -21,7 +21,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.categories.findMany({
       orderBy: {
-        name: 'asc', // จัดเรียงตามชื่อ
+        name: 'asc', 
       },
       select: {
         id_categories: true,

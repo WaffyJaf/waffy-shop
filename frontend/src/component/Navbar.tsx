@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isGameDropdownOpen, setIsGameDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const { token, role, username, email, logout } = useAuth();
+  const { token, user, logout } = useAuth(); 
   const navigate = useNavigate();
 
   const handleUserClick = () => {
@@ -42,17 +42,12 @@ const Navbar: React.FC = () => {
     <nav className="bg-transparent">
       <div className="max-w-8xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center  ">
+        <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <img
-              src="/logo_waffy.png"
-              className="h-34"
-              alt="Waffy Logo"
-            />
-            <span className="  text-2xl font-bold text-white">WAFFY GAME SHOP</span>
+            <img src="/logo_waffy.png" className="h-34" alt="Waffy Logo" />
+            <span className="text-2xl font-bold text-white">WAFFY GAME SHOP</span>
           </Link>
         </div>
-          
 
         {/* Menu */}
         <div className="flex items-center space-x-2 mr-5">
@@ -74,7 +69,7 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* User-specific menu */}
-          {role === 'USER' && (
+          {user?.role === 'USER' && (
             <>
               <span className="text-white text-sm">|</span>
               <Link
@@ -95,7 +90,7 @@ const Navbar: React.FC = () => {
           )}
 
           {/* Admin-specific menu */}
-          {role === 'ADMIN' && (
+          {user?.role === 'ADMIN' && (
             <>
               <span className="text-white text-sm">|</span>
               {/* จัดการสินค้า */}
@@ -114,14 +109,14 @@ const Navbar: React.FC = () => {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                     <div className="py-1">
                       <Link
-                        to="/manage-games"
+                        to="/manageproduct"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800"
                         onClick={handleDropdownClose}
                       >
                         จัดการสินค้า
                       </Link>
                       <Link
-                        to="/addproductr"
+                        to="/addproductr" // Note: Check if this should be "/addproduct"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800"
                         onClick={handleDropdownClose}
                       >
@@ -163,7 +158,7 @@ const Navbar: React.FC = () => {
                         จัดการผู้ใช้งาน
                       </Link>
                       <Link
-                        to="/manage-user"
+                        to="/manage-user" // Note: Check if this should be "/announcements"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800"
                         onClick={handleDropdownClose}
                       >
@@ -194,15 +189,15 @@ const Navbar: React.FC = () => {
                 className="text-white hover:text-gray-300 text-sm font-medium uppercase tracking-wider py-3 px-3 flex items-center"
               >
                 <i className="fa-solid fa-circle-user text-xl mr-2"></i>
-                {username || 'User'}
+                {user?.name || 'User'}
               </button>
               {isDropdownOpen && token && (
                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg z-10">
                   <div className="py-1">
                     <div className="px-4 py-2 text-sm text-gray-700">
-                      <p className="font-medium">Username: {username || 'User'}</p>
-                      <p>Email: {email || 'N/A'}</p>
-                      <p>Role: {role || 'N/A'}</p>
+                      <p className="font-medium">Username: {user?.name || 'User'}</p>
+                      <p>Email: {user?.email || 'N/A'}</p>
+                      <p>Role: {user?.role || 'N/A'}</p>
                     </div>
                     <button
                       onClick={handleLogout}
