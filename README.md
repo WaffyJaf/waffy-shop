@@ -24,7 +24,10 @@ A simple e-commerce website built with React, TypeScript, and Node.js.
    npm install
 4. Start the development server  
    ```bash
+   cd frontend
    npm run dev
+   cd backend
+   npx ts-node src/app.ts 
 5. Open your browser and go to  
    ```bash
    http://localhost:5172
