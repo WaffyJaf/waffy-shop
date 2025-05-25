@@ -8,14 +8,14 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-    /* Bundler mode (แก้เป็น node) */
+   
     "moduleResolution": "node",
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Linting */
+   
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

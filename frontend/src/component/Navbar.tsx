@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../component/AuthContext';
 
 const Navbar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isGameDropdownOpen, setIsGameDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const { token, user, logout } = useAuth(); 
   const navigate = useNavigate();
@@ -20,7 +19,6 @@ const Navbar: React.FC = () => {
 
   const handleDropdownClose = () => {
     setIsDropdownOpen(false);
-    setIsGameDropdownOpen(false);
     setIsUserDropdownOpen(false);
   };
 
@@ -121,7 +119,6 @@ const Navbar: React.FC = () => {
                 <button
                   onClick={() => {
                     setIsUserDropdownOpen((prev) => !prev);
-                    setIsGameDropdownOpen(false);
                   }}
                   className="text-white hover:text-gray-300 text-sm font-medium uppercase tracking-wider py-3 px-3 flex items-center"
                 >
