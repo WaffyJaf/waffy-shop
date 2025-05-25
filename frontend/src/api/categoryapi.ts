@@ -10,10 +10,12 @@ export interface CategoryResponse {
   message: string;
   data: Category[];
 }  
+
+const API_URL = import.meta.env.VITE_API_URL;
 // Get all categories
 export const getAllCategories = async (): Promise<Category[]> => {
   try {
-    const response = await axios.get("http://localhost:3000/category/");
+    const response = await axios.get(`${API_URL}/category/`);
     const data = response.data;
 
     console.log('API Response for categories (raw):', data); // Log raw response
@@ -36,7 +38,7 @@ export const getAllCategories = async (): Promise<Category[]> => {
 export const createCategory = async (name: string): Promise<{ success: boolean; message: string; category?: Category }> => {
   try {
     const response = await axios.post(
-      'http://localhost:3000/category/createcategory',
+      `${API_URL}/category/createcategory`,
       { name },
       {
         headers: {
@@ -63,7 +65,7 @@ export const createCategory = async (name: string): Promise<{ success: boolean; 
 // Delete a category
 export const deleteCategory = async (id: number): Promise<{ success: boolean; message: string }> => {
   try {
-    const response = await axios.delete(`http://localhost:3000/category/delete/${id}`);
+    const response = await axios.delete(`${API_URL}/category/delete/${id}`);
 
     if (response.status === 200) {
       return { success: true, message: 'ลบหมวดหมู่เรียบร้อย' };

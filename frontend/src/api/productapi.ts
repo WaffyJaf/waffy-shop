@@ -2,11 +2,11 @@ import axios from 'axios';
 import {FormProduct , AddProductResponse} from '../type/product.ts'
 
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 export const AddProducts = async (data: FormProduct): Promise<AddProductResponse> => {
   console.log('Starting AddProducts with data:', data);
   try {
-    const response = await axios.post("http://localhost:3000/product/addproduct", data, {
+    const response = await axios.post(`${API_URL}/product/addproduct`, data, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -30,7 +30,7 @@ export const uploadImage = async (file: File): Promise<string> => {
   uploadData.append("image", file);
 
   try {
-    const response = await axios.post("http://localhost:3000/product/uploadimage", uploadData);
+    const response = await axios.post(`${API_URL}/product/uploadimage`, uploadData);
     console.log('uploadImage response:', response.status, response.data);
 
     if (response.status === 200 && typeof response.data.imageUrl === 'string') {
@@ -48,7 +48,7 @@ export const uploadImage = async (file: File): Promise<string> => {
 export const getProductsByCategory = async (categoryId: number): Promise<FormProduct[]> => {
   try {
     console.log('Fetching products for category:', categoryId);
-    const response = await axios.get(`http://localhost:3000/product/category/${categoryId}`, {
+    const response = await axios.get(`${API_URL}/product/category/${categoryId}`, {
       timeout: 5000
     });
 
@@ -68,7 +68,7 @@ export const getProductsByCategory = async (categoryId: number): Promise<FormPro
 
 export const getProducts = async (): Promise<FormProduct[]> => {
   try {
-    const response = await axios.get("http://localhost:3000/product/getproduct");
+    const response = await axios.get(`${API_URL}/product/getproduct`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -81,7 +81,7 @@ export const getProducts = async (): Promise<FormProduct[]> => {
 
 export const getProductById = async (id: number): Promise<FormProduct> => {
   try {
-    const response = await axios.get(`http://localhost:3000/product/${id}`);
+    const response = await axios.get(`${API_URL}/product/${id}`);
     return response.data;
   } catch (error) {
     throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า');
@@ -90,7 +90,7 @@ export const getProductById = async (id: number): Promise<FormProduct> => {
 
 export const deleteProduct = async (id: number): Promise<void> => {
   try {
-    await axios.delete(`http://localhost:3000/product/delete/${id}`);
+    await axios.delete(`${API_URL}/product/delete/${id}`);
   } catch (error) {
     throw new Error('เกิดข้อผิดพลาดในการลบสินค้า');
   }
@@ -98,7 +98,7 @@ export const deleteProduct = async (id: number): Promise<void> => {
 
 export const updateProduct = async (id: number, product:FormProduct): Promise<void> => {
   try {
-    await axios.put(`http://localhost:3000/product/update/${id}`, product);
+    await axios.put(`${API_URL}/product/update/${id}`, product);
   } catch (error) {
     throw new Error('เกิดข้อผิดพลาดในการอัปเดตสินค้า');
   }
