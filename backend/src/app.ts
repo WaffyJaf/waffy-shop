@@ -11,7 +11,7 @@ import path from 'path';
 
 dotenv.config();
 const app: Application = express();
-const port: number = Number(process.env.PORT) || 3000;
+const port: number = Number(process.env.PORT) || 10000;
 
 app.use(
   cors({
