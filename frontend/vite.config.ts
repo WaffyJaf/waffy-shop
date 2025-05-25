@@ -8,5 +8,9 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
 
+  build: {
+    chunkSizeWarningLimit: 1000,  
+  }
+
   
 })
