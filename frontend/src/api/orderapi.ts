@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { CartItem } from '../type/cart';
+import {  Order } from '../type/product';
 
-export const addProductToCart = async (userId: string, productId: number, quantity: number) => {
+export const addProductToCart = async (userId: number, productId: number, quantity: number) => {
   const response = await axios.post('http://localhost:3000/order/addcart', {
     userId,
     productId,
@@ -45,4 +46,45 @@ export const removeCartItem = async (itemId: string) => {
     throw new Error(errorData.message || 'ไม่สามารถลบสินค้าออกจากตะกร้าได้');
   }
   return response.json();
+};
+
+
+export const createOrder = async (userId: number, cartItems: any[]) => {
+  try {
+    const items = cartItems.map(item => ({
+      product_id: item.product_id,
+      quantity: item.quantity,
+      price: item.product.price,
+    }));
+    const total = items.reduce((sum, item) => sum + item.quantity * item.price, 0);
+    const response = await axios.post('http://localhost:3000/order/createorder', { userId, items, total });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to create order');
+  }
+};
+
+export const getOrdersByUser = async (userId: number): Promise<Order[]> => {
+  try {
+    const response = await axios.get(`http://localhost:3000/order/get/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch orders');
+  }
+};
+
+export const uploadPaymentSlip = async (orderId: number, amount: number, slip: File) => {
+  const formData = new FormData();
+  formData.append('orderId', orderId.toString());
+  formData.append('amount', amount.toString());
+  formData.append('slip', slip);
+
+  try {
+    const response = await axios.post('http://localhost:3000/order/payment', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to upload payment slip');
+  }
 };

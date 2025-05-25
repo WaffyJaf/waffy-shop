@@ -111,7 +111,7 @@ const AdminRoleManager: React.FC = () => {
             confirmButtonText: 'ตกลง',
             confirmButtonColor: '#9333ea',
            }).then(() => {
-        navigate('/'); 
+        navigate('/manageuser'); 
       });
           getUsers();
         } catch (error) {
@@ -160,7 +160,7 @@ const AdminRoleManager: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
-                <thead className="bg-purple-100 text-purple-800">
+                <thead className="bg-yellow-500 text-black">
                   <tr>
                     <th className="p-4 font-semibold">USER ID</th>
                     <th className="p-4 font-semibold">USERNAME</th>
@@ -175,8 +175,8 @@ const AdminRoleManager: React.FC = () => {
                       key={user.user_id}
                       className="hover:bg-purple-50 transition-colors duration-200"
                     >
-                      <td className="p-4">{user.user_id}</td>
-                      <td className="p-4">{user.name}</td>
+                      <td className="p-4 ">{user.user_id}</td>
+                      <td className="p-4 text-blue-700">{user.name}</td>
                       <td className="p-4">{user.email}</td>
                       <td className="p-4">
                         <span 

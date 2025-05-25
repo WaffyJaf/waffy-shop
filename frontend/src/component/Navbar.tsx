@@ -42,10 +42,10 @@ const Navbar: React.FC = () => {
     <nav className="bg-transparent">
       <div className="max-w-8xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center">
-          <Link to="/" className="flex items-center">
-            <img src="/logo_waffy.png" className="h-34" alt="Waffy Logo" />
-            <span className="text-2xl font-bold text-white">WAFFY GAME SHOP</span>
+        <div className="flex items-center ">
+          <Link to="/" className="flex ">
+            <img src="/logo_waffy.png" className="h-25 w-40" alt="Waffy Logo" />
+            <span className="mt-10 text-2xl font-bold text-white ">WAFFY GAME SHOP</span>
           </Link>
         </div>
 
@@ -62,10 +62,17 @@ const Navbar: React.FC = () => {
           <span className="text-white text-sm">|</span>
 
           <Link
-            to="/shop"
+            to="/product"
             className="text-white hover:text-gray-300 text-sm font-medium uppercase tracking-wider py-3 px-3"
           >
             สินค้าทั้งหมด
+          </Link>
+          <span className="text-white text-sm">|</span>
+          <Link
+            to="/shop"
+            className="text-white hover:text-gray-300 text-sm font-medium uppercase tracking-wider py-3 px-3"
+          >
+            ติดต่อเรา
           </Link>
 
           {/* User-specific menu */}
@@ -92,49 +99,23 @@ const Navbar: React.FC = () => {
           {/* Admin-specific menu */}
           {user?.role === 'ADMIN' && (
             <>
+            <span className="text-white text-sm">|</span>
+              <Link
+                to="/category"
+                className="text-white hover:text-gray-300 text-sm font-medium uppercase tracking-wider py-3 px-3"
+              >
+                จัดการหมวดหมู่
+              </Link>
               <span className="text-white text-sm">|</span>
-              {/* จัดการสินค้า */}
-              <div className="relative">
-                <button
-                  onClick={() => {
-                    setIsGameDropdownOpen((prev) => !prev);
-                    setIsUserDropdownOpen(false);
-                  }}
-                  className="text-white hover:text-gray-300 text-sm font-medium uppercase tracking-wider py-3 px-3 flex items-center"
-                >
-                  จัดการสินค้า
-                  <i className="fa-solid fa-caret-down ml-2"></i>
-                </button>
-                {isGameDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                    <div className="py-1">
-                      <Link
-                        to="/manageproduct"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800"
-                        onClick={handleDropdownClose}
-                      >
-                        จัดการสินค้า
-                      </Link>
-                      <Link
-                        to="/addproductr" // Note: Check if this should be "/addproduct"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800"
-                        onClick={handleDropdownClose}
-                      >
-                        เพิ่มสินค้าใหม่
-                      </Link>
-                      <Link
-                        to="/category"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-800"
-                        onClick={handleDropdownClose}
-                      >
-                        จัดการหมวดหมู่
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <Link
+                to="/manageproduct"
+                className="text-white hover:text-gray-300 text-sm font-medium uppercase tracking-wider py-3 px-3"
+              >
+                จัดการสินค้า
+              </Link>
 
               <span className="text-white text-sm">|</span>
+
               {/* จัดการระบบ */}
               <div className="relative">
                 <button
@@ -172,7 +153,7 @@ const Navbar: React.FC = () => {
           )}
 
           {/* Divider before Login/User */}
-          <span className="text-white text-sm">|</span>
+          
 
           {/* User/Login Button */}
           {!token ? (

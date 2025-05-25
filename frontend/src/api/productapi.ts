@@ -65,14 +65,19 @@ export const getProductsByCategory = async (categoryId: number): Promise<FormPro
   }
 };
 
+
 export const getProducts = async (): Promise<FormProduct[]> => {
   try {
     const response = await axios.get("http://localhost:3000/product/getproduct");
     return response.data;
   } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`เกิดข้อผิดพลาด: ${error.response.status} ${error.response.statusText}`);
+    }
     throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า');
   }
 };
+
 
 export const getProductById = async (id: number): Promise<FormProduct> => {
   try {

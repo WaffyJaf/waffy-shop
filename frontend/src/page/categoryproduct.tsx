@@ -56,11 +56,21 @@ const CategoryProductsPage: React.FC = () => {
     fetchCategoryAndProducts();
   }, [categoryId]);
 
-  const addToCart = async (user: User, product: FormProduct) => {
+  const addToCart = async (user: User | null, product: FormProduct) => {
+    console.log('addToCart - User:', user);
     if (!user) {
-    
-    return;
-  }
+      Swal.fire({
+        icon: 'warning',
+        title: 'กรุณาเข้าสู่ระบบ',
+        text: 'คุณต้องเข้าสู่ระบบเพื่อเพิ่มสินค้าลงในตะกร้า',
+        confirmButtonText: 'เข้าสู่ระบบ',
+        confirmButtonColor: '#9333ea',
+      }).then(() => {
+        navigate('/login');
+      });
+      return;
+    }
+
     try {
       await addProductToCart(user.user_id, product.id_products, 1);
       Swal.fire({
@@ -95,8 +105,19 @@ const CategoryProductsPage: React.FC = () => {
     addToCart(user, product);
   };
 
-  const buyNow = (productId: number) => {
-    console.log(`Buy now: Product ID ${productId}`);
+  const handleProductClick = (id: number) => {
+    if (!id) {
+      console.error('Invalid product ID:', id);
+      Swal.fire({
+        icon: 'error',
+        title: 'ข้อผิดพลาด',
+        text: 'ไม่สามารถเข้าถึงรายละเอียดสินค้าได้ เนื่องจาก ID ไม่ถูกต้อง',
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#9333ea',
+      });
+      return;
+    }
+    console.log(`Navigating to product detail: ${id}`);
     if (!user) {
       Swal.fire({
         icon: 'warning',
@@ -109,26 +130,39 @@ const CategoryProductsPage: React.FC = () => {
       });
       return;
     }
-    navigate(`/checkout/${productId}`);
+    navigate(`/product/${id}`);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-950 to-sky-950 text-white">
       <Navbar />
-      <div className="max-w-5xl mx-auto mt-12 p-6">
+      <div className="max-w-5xl mx-auto p-6">
         <span className="text-3xl font-bold text-left">
           สินค้าในหมวดหมู่: {category ? category.name : 'กำลังโหลด...'}
         </span>
         {isLoading ? (
-          <div className="text-center text-lg">กำลังโหลดสินค้า...</div>
+          <div className="flex items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+            <span className="ml-3 text-lg">กำลังโหลดสินค้า...</span>
+          </div>
         ) : products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
             {products.map((product) => (
               <div
                 key={product.id_products}
-                className="bg-white text-gray-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-default"
-                aria-label={`View ${product.name}`}
+                className="bg-white text-gray-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-pointer relative group"
+                onClick={() => handleProductClick(product.id_products)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleProductClick(product.id_products);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${product.name} details`}
               >
+                {/* รูปภาพสินค้า */}
                 <div className="relative w-full h-48 bg-gray-200">
                   <img
                     src={
@@ -154,7 +188,6 @@ const CategoryProductsPage: React.FC = () => {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold truncate">{product.name}</h3>
-                  <p className="text-gray-600 mt-1 line-clamp-2">{product.description}</p>
                   <p className="text-blue-600 font-bold mt-2">
                     ฿{product.price.toFixed(2)}
                   </p>
@@ -162,11 +195,11 @@ const CategoryProductsPage: React.FC = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      buyNow(product.id_products);
+                      handleProductClick(product.id_products);
                     }}
                     className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
                   >
-                    ซื้อเลย
+                    ดูรายละเอียด
                   </button>
                 </div>
               </div>

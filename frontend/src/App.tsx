@@ -11,7 +11,11 @@ import AddProductPage from './admin/Addproduct'
 import CategoryManagementPage from './admin/Category'
 import ManageProduct from './admin/Manageproduct';
 import EditProduct from './admin/Editproduct';
+import OrdersPage from './page/order';
+import Productdetail from './page/productdetail';
+import TopupForm from './page/topuppage';
 import Cart from './page/cart';
+import AllProductsPage from './page/allproduct';
 
 const App: React.FC = () => {
   return (
@@ -23,11 +27,14 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
+        <Route path="/product/:id" element={< Productdetail  />} />
+        <Route path="/topup" element={< TopupForm />} />
+         <Route path="/product" element={< AllProductsPage />} />
   
         {/* เส้นทางที่ต้องมีการล็อกอินและตรวจ role */}
         <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
           <Route path="/manageuser" element={<AdminRoleManager />} />
-          <Route path="/addproductr" element={<AddProductPage />} />
+          <Route path="/addproduct" element={<AddProductPage />} />
           <Route path="/category" element={<CategoryManagementPage />} />
           <Route path="/manageproduct" element={<ManageProduct />} />
           <Route path="/edit/:id" element={<EditProduct />} />
@@ -36,6 +43,7 @@ const App: React.FC = () => {
   
         <Route element={<ProtectedRoute allowedRoles={['USER']} />}>
           <Route path="/cart" element={<Cart />} />
+          <Route path="/order" element={<OrdersPage />} />
         </Route>
   
         {/* เส้นทางอื่น ๆ ที่ไม่เจอ */}

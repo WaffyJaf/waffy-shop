@@ -14,7 +14,10 @@ model user {
   name       String       @db.VarChar(255)
   role       user_role?   @default(USER)
   createdAt  DateTime?    @default(now()) @db.DateTime(0)
+  balance    Decimal?     @db.Decimal(10, 2)
   cart_items cart_items[]
+  orders     orders[]
+  topups     topups[]
 }
 
 model categories {
@@ -25,18 +28,19 @@ model categories {
 }
 
 model products {
-  id_products Int          @id @default(autoincrement())
-  name        String       @db.VarChar(255)
-  description String?      @db.Text
-  price       Decimal      @db.Decimal(10, 2)
-  stock       Int?         @default(0)
-  image_url   String?      @db.VarChar(500)
+  id_products Int           @id @default(autoincrement())
+  name        String        @db.VarChar(255)
+  description String?       @db.Text
+  price       Decimal       @db.Decimal(10, 2)
+  stock       Int?          @default(0)
+  image_url   String?       @db.VarChar(500)
   category_id Int
-  created_at  DateTime?    @default(now()) @db.DateTime(0)
-  updated_at  DateTime?    @default(now()) @db.DateTime(0)
-  is_active   Boolean?     @default(true)
+  created_at  DateTime?     @default(now()) @db.DateTime(0)
+  updated_at  DateTime?     @default(now()) @db.DateTime(0)
+  is_active   Boolean?      @default(true)
   cart_items  cart_items[]
-  categories  categories   @relation(fields: [category_id], references: [id_categories], onDelete: NoAction, onUpdate: NoAction, map: "products_ibfk_1")
+  order_items order_items[]
+  categories  categories    @relation(fields: [category_id], references: [id_categories], onDelete: NoAction, onUpdate: NoAction, map: "products_ibfk_1")
 
   @@index([category_id], map: "category_id")
 }
@@ -55,7 +59,80 @@ model cart_items {
   @@index([user_id], map: "user_id")
 }
 
+model orders {
+  id          Int           @id @default(autoincrement())
+  user_id     Int
+  total       Decimal       @db.Decimal(10, 2)
+  status      order_status  @default(PENDING)
+  created_at  DateTime      @default(now()) @db.Timestamp(0)
+  updated_at  DateTime      @default(now()) @db.Timestamp(0)
+  order_items order_items[]
+  user        user          @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  payments    payments[]
+
+  @@index([user_id])
+}
+
+model payments {
+  id         Int            @id @default(autoincrement())
+  order_id   Int
+  amount     Decimal        @db.Decimal(10, 2)
+  slip_image String?        @db.VarChar(500)
+  status     payment_status @default(PENDING)
+  paid_at    DateTime?
+  created_at DateTime       @default(now()) @db.Timestamp(0)
+  orders     orders         @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+  @@index([order_id])
+}
+
+model order_items {
+  id         Int      @id @default(autoincrement())
+  order_id   Int
+  product_id Int
+  quantity   Int      @default(1)
+  price      Decimal  @db.Decimal(10, 2)
+  orders     orders   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  products   products @relation(fields: [product_id], references: [id_products], onDelete: Cascade)
+
+  @@index([order_id])
+  @@index([product_id])
+}
+
+model topups {
+  id              Int           @id @default(autoincrement())
+  user_id         Int
+  amount          Decimal       @db.Decimal(10, 2)
+  status          topups_status @default(PENDING)
+  payment_method  String?       @db.VarChar(50)
+  transaction_ref String?       @db.VarChar(100)
+  created_at      DateTime?     @default(now()) @db.Timestamp(0)
+  confirmed_at    DateTime?     @db.Timestamp(0)
+  slip_image      String?       @db.VarChar(255)
+  user            user          @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_topups_user")
+
+  @@index([user_id], map: "fk_topups_user")
+}
+
+enum order_status {
+  PENDING
+  PAID
+  CANCELED
+}
+
+enum payment_status {
+  PENDING
+  PAID
+  FAILED
+}
+
 enum user_role {
   ADMIN
   USER
+}
+
+enum topups_status {
+  PENDING
+  SUCCESS
+  FAILED
 }

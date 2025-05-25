@@ -188,7 +188,8 @@ const CategoryManagementPage: React.FC = () => {
       
       {/* Categories List */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <span className="text-2xl font-semibold mb-4">รายการหมวดหมู่</span>
+        
+        <span className="text-2xl font-semibold mb-4"><i className="fa-solid fa-bars mr-3 text-amber-300"></i>รายการหมวดหมู่</span>
         
         {isLoading ? (
           <div className="flex justify-center items-center py-8">
@@ -199,18 +200,18 @@ const CategoryManagementPage: React.FC = () => {
             ไม่พบข้อมูลหมวดหมู่
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 mt-6">
-              <thead className="bg-gray-900">
+          <div className="overflow-x-auto ">
+            <table className="min-w-full divide-y divide-gray-200 mt-6 ">
+              <thead className="bg-yellow-400 ">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xm font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xm font-medium text-gray-950 uppercase tracking-wider">
                     ไอดี
                   </th>
-                  <th className="px-6 py-3 text-left text-xm font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xm font-medium text-gray-950 uppercase tracking-wider">
                     ชื่อหมวดหมู่
                   </th>
-                  <th className="px-6 py-3 text-right text-xm font-medium text-gray-500 uppercase tracking-wider">
-                  
+                  <th className="px-6 py-3 text-right text-xm font-medium text-gray-950 uppercase tracking-wider">
+                    จัดการ
                   </th>
                 </tr>
               </thead>
@@ -226,10 +227,10 @@ const CategoryManagementPage: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => handleDeleteCategory(category.id_categories, category.name)}
-                        className="text-red-600 hover:text-red-900 focus:outline-none"
-                      >
-                        ลบ
-                      </button>
+                        className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 duration-300 transform hover:scale-105"
+                        >
+                          <i className="fa-solid fa-trash mr-2"></i> ลบ
+                        </button>
                     </td>
                   </tr>
                 ))}

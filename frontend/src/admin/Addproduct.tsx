@@ -169,7 +169,7 @@ const AddProductPage: React.FC = () => {
       <div className="max-w-5xl mx-auto mt-12 p-8 bg-white rounded-2xl shadow-xl">
         <span className="text-4xl font-bold  text-center text-gray-900 tracking-tight">
           เพิ่มสินค้าใหม่
-          <i className="fa-solid fa-plus ml-3"></i>
+          <i className="fa-solid fa-plus ml-3 text-amber-400"></i>
         </span>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 mt-6">

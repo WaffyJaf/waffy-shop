@@ -94,40 +94,46 @@ export const AddProducts = async (req: Request, res: Response) => {
 
 
 export const getProduct = async (req: Request, res: Response) => {
-    try {
-      const getevent = await prisma.products.findMany({
-        select: {
-          id_products:true,
-          name: true,
-          description:true,
-          price: true,
-          stock: true,
-          image_url:true,
-          category_id: true,
-          is_active:true,
-        },
-        orderBy: {
-          created_at: 'desc', 
-        },
-      });
-  
-      
-      if (getevent.length === 0) {
-        return res.status(404).json({ message: 'ไม่พบสินค้า' });
-      }
-  
-      // ส่งข้อมูลกลับในรูปแบบ JSON
-      return res.status(200).json(getevent);
-    } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", error);
-  
-      // ถ้ามีข้อผิดพลาดใด ๆ เกิดขึ้น ให้ตอบกลับด้วยสถานะ 500
-      return res.status(500).json({
-        message: 'เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า',
-        error: error instanceof Error ? error.message : error,
-      });
+  try {
+    const products = await prisma.products.findMany({
+      where: {
+        is_active: true, // ดึงเฉพาะสินค้าที่ใช้งานอยู่
+      },
+      select: {
+        id_products: true,
+        name: true,
+        description: true,
+        price: true,
+        stock: true,
+        image_url: true,
+        category_id: true,
+        is_active: true,
+        created_at: true,
+      },
+      orderBy: {
+        created_at: 'desc', 
+      },
+    });
+
+    if (products.length === 0) {
+      return res.status(404).json({ message: 'ไม่พบสินค้า' });
     }
-  };
+
+    // แปลง price เป็นตัวเลข
+    const parsedProducts = products.map((product) => ({
+      ...product,
+      price: Number(product.price), 
+    }));
+
+    return res.status(200).json(parsedProducts);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return res.status(500).json({
+      message: 'เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
 
   export const getProductsByCategory = async (req: Request, res: Response) => {
   const { categoryId } = req.params;

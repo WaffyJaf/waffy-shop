@@ -26,7 +26,7 @@ const Register: React.FC = () => {
     try {
       const response = await registerUser(formData);
       const user: User = {
-        user_id: response.user.userId,
+        user_id: response.user.user_id,
         email: response.user.email,
         name: response.user.name,
         role: response.user.role || 'USER', 

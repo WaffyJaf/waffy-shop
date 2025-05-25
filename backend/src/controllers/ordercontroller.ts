@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import multer from 'multer';
 
 const prisma = new PrismaClient();
+const upload = multer({ dest: 'uploads/' });
 
 export const AddCart = async (req: Request, res: Response) => {
   console.log('AddCart endpoint called with:', req.body);
@@ -151,5 +153,85 @@ export const RemoveCart = async (req: Request, res: Response) => {
   } catch (err) {
     console.error('Error removing cart item:', err);
     return res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลบสินค้าออกจากตะกร้า' });
+  }
+};
+
+export const CreateOrder = async (req: Request, res: Response) => {
+  try {
+    const { userId, items, total } = req.body;
+
+    if (!userId || !items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: "ข้อมูลไม่ถูกต้อง" });
+    }
+
+    const order = await prisma.orders.create({
+      data: {
+        user_id: userId,
+        total,
+        status: "PENDING",
+        order_items: {
+          create: items.map((item: any) => ({
+            product_id: item.product_id, 
+            quantity: item.quantity,
+            price: item.price,
+          })),
+        },
+      },
+      include: {
+        order_items: true,
+      },
+    });
+
+    res.status(201).json(order);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: "เกิดข้อผิดพลาดในการสร้างคำสั่งซื้อ" });
+  }
+};
+
+export const getOrdersByUser = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  try {
+    const orders = await prisma.orders.findMany({
+      where: { user_id: Number(userId) },
+      include: {
+        order_items: {
+          include: {
+            products: true,
+          },
+        },
+        payments: true,
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "ไม่สามารถดึงคำสั่งซื้อได้" });
+  }
+};
+
+export const uploadPaymentSlip = async (req: Request, res: Response) => {
+  try {
+    const { orderId, amount } = req.body;
+    const slip = req.file;
+    if (!orderId || !amount || !slip) {
+      return res.status(400).json({ message: 'ข้อมูลไม่ครบถ้วน' });
+    }
+    const slipPath = `/uploads/${slip.filename}`;
+    const payment = await prisma.payments.create({
+      data: {
+        order_id: Number(orderId),
+        amount: parseFloat(amount),
+        slip_image: slipPath,
+        status: 'PENDING',
+      },
+    });
+    res.status(201).json(payment);
+  } catch (error) {
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการอัปโหลดสลิป' });
   }
 };

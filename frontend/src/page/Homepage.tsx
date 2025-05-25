@@ -4,8 +4,9 @@ import Swal from 'sweetalert2';
 import Navbar from '../component/Navbar';
 import { getAllCategories, Category } from '../api/categoryapi';
 
+
 const categoryImages: { [key: number]: string } = {
-  1: '/steam.jpg',
+  5: '/steam.jpg',
   2: '/rov.webp',
   3: '/freefire.jpg',
   4: '/roblox.jpg',
@@ -85,7 +86,7 @@ const HomePage: React.FC = () => {
   const memoizedCategories = useMemo(() => categories, [categories]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-950 to-sky-950 text-white">
+    <div className="min-h-screen bg-gradient-to-r from-gray-950 to-sky-900 text-white">
       <Navbar />
 
       {/* Advertisement Banner Carousel */}

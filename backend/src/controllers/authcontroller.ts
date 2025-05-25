@@ -61,7 +61,6 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  // ค้นหาผู้ใช้
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
     return res.status(400).json({ error: 'Invalid email or password' });
@@ -81,7 +80,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
   // สร้าง JWT Token
   const token = jwt.sign(
-    { userId: user.user_id, role: user.role },
+    { userId: user.user_id, role: user.role }, // Keep userId in JWT for consistency
     secret,
     { expiresIn: '1h' }
   );
@@ -91,10 +90,10 @@ export const loginUser = async (req: Request, res: Response) => {
     message: 'Login successful',
     token,
     user: {
-      userId: user.user_id,
+      user_id: user.user_id, // Fix: Use user_id to match AuthResponse
       name: user.name,
       email: user.email,
-      role: user.role, // ส่งข้อมูล role ของ user
+      role: user.role,
     },
   });
 };

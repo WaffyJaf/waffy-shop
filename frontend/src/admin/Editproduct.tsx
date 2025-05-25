@@ -154,7 +154,7 @@ const EditProduct: React.FC = () => {
             popup: 'animate__animated animate__fadeOutUp',
           },
         });
-        navigate('/manage-products');
+        navigate('/manageproduct');
       } catch (err) {
         console.error('เกิดข้อผิดพลาดในการอัปเดตสินค้า:', err);
         Swal.fire({
@@ -299,7 +299,7 @@ const EditProduct: React.FC = () => {
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
-                onClick={() => navigate('/manage-products')}
+                onClick={() => navigate('/manageproduct')}
                 className="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition-all duration-300 transform hover:scale-105 shadow-md"
               >
                 ยกเลิก

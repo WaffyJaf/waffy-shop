@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { LoginData, User } from '../type/user'; 
+import { LoginData, User } from '../type/user';
 import { loginUser } from '../api/authapi';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
-import { useAuth } from '../component/AuthContext'; 
+import { useAuth } from '../component/AuthContext';
 import Swal from 'sweetalert2';
 
 const Login: React.FC = () => {
@@ -19,25 +19,30 @@ const Login: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
-  console.log('Sending login data:', formData); // Debug: Check email and password
+  console.log('Login - Sending login data:', formData);
   try {
     const response = await loginUser(formData);
-    console.log('Response:', response);
+    console.log('Login - API response:', response);
 
-    if (!response.token || !response.user) {
-      throw new Error('Invalid response data');
+    if (!response.token || !response.user || !response.user.user_id) {
+      throw new Error('Invalid response data: Missing token or user_id');
     }
 
     const user: User = {
-      user_id: response.user.userId, 
+      user_id: response.user.user_id,
       email: response.user.email,
       name: response.user.name,
       role: response.user.role || 'USER',
     };
+    console.log('Login - Constructed user:', user);
 
     login(response.token, user);
+    console.log('Login - localStorage after login:', {
+      token: localStorage.getItem('token'),
+      user: JSON.parse(localStorage.getItem('user') || '{}'),
+    });
 
     Swal.fire({
       icon: 'success',
