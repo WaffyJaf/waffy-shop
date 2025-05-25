@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProductById, updateProduct, uploadImage } from '../api/productapi';
-import { FormProduct } from '../type/product';
-import Navbar from '../component/Navbar';
+import { getProductById, updateProduct, uploadImage } from '../api/productapi.ts';
+import { FormProduct } from '../type/product.ts';
+import Navbar from '../component/Navbar.tsx';
 import Swal from 'sweetalert2';
 
 const EditProduct: React.FC = () => {

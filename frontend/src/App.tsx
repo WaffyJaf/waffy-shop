@@ -1,21 +1,20 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Register from './component/RegisterForm';
-import Login from './component/LoginForm';
-import ProtectedRoute from './component/Protected';
-import {AuthProvider} from './component/AuthContext'
-import AdminRoleManager from './admin/Manageuser';
-import CategoryProductsPage from './page/categoryproduct'
-import HomePage from './page/Homepage';
-import AddProductPage from './admin/Addproduct'
-import CategoryManagementPage from './admin/Category'
-import ManageProduct from './admin/Manageproduct';
-import EditProduct from './admin/Editproduct';
-import OrdersPage from './page/order';
-import Productdetail from './page/productdetail';
-import TopupForm from './page/topuppage';
-import Cart from './page/cart';
-import AllProductsPage from './page/allproduct';
+import Register from './component/RegisterForm.tsx';
+import Login from './component/LoginForm.tsx';
+import ProtectedRoute from './component/Protected.tsx';
+import {AuthProvider} from './component/AuthContext.tsx'
+import AdminRoleManager from './admin/Manageuser.tsx';
+import CategoryProductsPage from './page/categoryproduct.tsx'
+import HomePage from './page/Homepage.tsx';
+import AddProductPage from './admin/Addproduct.tsx'
+import CategoryManagementPage from './admin/Category.tsx'
+import ManageProduct from './admin/Manageproduct.tsx';
+import EditProduct from './admin/Editproduct.tsx';
+import OrdersPage from './page/order.tsx';
+import Productdetail from './page/productdetail.tsx';
+import TopupForm from './page/topuppage.tsx';
+import Cart from './page/cart.tsx';
+import AllProductsPage from './page/allproduct.tsx';
 
 const App: React.FC = () => {
   return (

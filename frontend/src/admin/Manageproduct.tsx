@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts, deleteProduct } from '../api/productapi';
-import { FormProduct } from '../type/product';
-import Navbar from '../component/Navbar';
+import { getProducts, deleteProduct } from '../api/productapi.ts';
+import { FormProduct } from '../type/product.ts';
+import Navbar from '../component/Navbar.tsx';
 import Swal from 'sweetalert2';
 
 const ManageProduct: React.FC = () => {

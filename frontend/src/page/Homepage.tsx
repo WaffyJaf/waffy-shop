@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
-import { getAllCategories, Category } from '../api/categoryapi';
+import Navbar from '../component/Navbar.tsx';
+import { getAllCategories, Category } from '../api/categoryapi.ts';
 
 
 const categoryImages: { [key: number]: string } = {

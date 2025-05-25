@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
-import { useAuth } from '../component/AuthContext';
-import { getOrdersByUser, uploadPaymentSlip } from '../api/orderapi';
-import { Order } from '../type/product';
+import Navbar from '../component/Navbar.tsx';
+import { useAuth } from '../component/AuthContext.tsx';
+import { getOrdersByUser, uploadPaymentSlip } from '../api/orderapi.ts';
+import { Order } from '../type/product.ts';
 
 const OrdersPage: React.FC = () => {
   const { user } = useAuth();

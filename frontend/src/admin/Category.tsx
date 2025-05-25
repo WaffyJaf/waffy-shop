@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { getAllCategories, createCategory, deleteCategory, Category } from '../api/categoryapi';
+import { getAllCategories, createCategory, deleteCategory, Category } from '../api/categoryapi.ts';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
+import Navbar from '../component/Navbar.tsx';
 
 interface CategoryFormData {
   name: string;
@@ -149,7 +149,6 @@ const CategoryManagementPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-r from-gray-950 to-sky-950 ">
       <Navbar/>
     <div className="container mx-auto p-4">
-
       
       {/* Add Category Form */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">

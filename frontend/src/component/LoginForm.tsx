@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { LoginData, User } from '../type/user';
-import { loginUser } from '../api/authapi';
+import { LoginData, User } from '../type/user.ts';
+import { loginUser } from '../api/authapi.ts';
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
-import { useAuth } from '../component/AuthContext';
+import Navbar from './Navbar.tsx';
+import { useAuth } from '../component/AuthContext.tsx';
 import Swal from 'sweetalert2';
 
 const Login: React.FC = () => {

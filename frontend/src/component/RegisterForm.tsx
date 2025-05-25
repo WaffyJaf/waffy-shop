@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { RegisterData, User } from '../type/user'; // Import User type
-import { registerUser } from '../api/authapi';
+import { RegisterData, User } from '../type/user.ts'; // Import User type
+import { registerUser } from '../api/authapi.ts';
 import { useNavigate, Link } from 'react-router-dom';
-import Navbar from './Navbar';
-import { useAuth } from '../component/AuthContext';
+import Navbar from './Navbar.tsx';
+import { useAuth } from '../component/AuthContext.tsx';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 

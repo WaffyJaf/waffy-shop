@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../component/AuthContext';
+import { useAuth } from '../component/AuthContext.tsx';
 
 interface ProtectedRouteProps {
   allowedRoles: ('ADMIN' | 'USER')[];

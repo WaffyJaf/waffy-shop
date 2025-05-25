@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { UserRole, User } from '../type/user';
-import { updateUserRole, getUsers , deleteUser } from '../api/admin';
+import { UserRole, User } from '../type/user.ts';
+import { updateUserRole, getUsers , deleteUser } from '../api/admin.ts';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
+import Navbar from '../component/Navbar.tsx';
 import { useNavigate } from 'react-router-dom';
 
 const userRoleOptions = [

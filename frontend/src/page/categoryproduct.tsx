@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
-import { getProductsByCategory } from '../api/productapi';
-import { addProductToCart } from '../api/orderapi';
-import { FormProduct } from '../type/product';
-import { getAllCategories, Category } from '../api/categoryapi';
-import { useAuth, User } from '../component/AuthContext'; 
+import Navbar from '../component/Navbar.tsx';
+import { getProductsByCategory } from '../api/productapi.ts';
+import { addProductToCart } from '../api/orderapi.ts';
+import { FormProduct } from '../type/product.ts';
+import { getAllCategories, Category } from '../api/categoryapi.ts';
+import { useAuth, User } from '../component/AuthContext.tsx'; 
 
 const CategoryProductsPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();

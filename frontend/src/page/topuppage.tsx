@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Swal from 'sweetalert2';
-import { createTopup, uploadSlip, processSlip, TopupResponse, SlipUploadResponse, SlipProcessResponse } from '../api/topupapi';
-import Navbar from '../component/Navbar';
+import { createTopup, uploadSlip, processSlip, TopupResponse, SlipUploadResponse, SlipProcessResponse } from '../api/topupapi.ts';
+import Navbar from '../component/Navbar.tsx';
 import { CreditCard, Star, Sparkles, QrCode, CheckCircle2, Upload, AlertCircle } from 'lucide-react';
 
 const TopupForm: React.FC = () => {

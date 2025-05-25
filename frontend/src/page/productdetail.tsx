@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
-import { getProductById } from '../api/productapi';
-import { addProductToCart } from '../api/orderapi';
-import { FormProduct } from '../type/product';
-import { useAuth, User } from '../component/AuthContext';
+import Navbar from '../component/Navbar.tsx';
+import { getProductById } from '../api/productapi.ts';
+import { addProductToCart } from '../api/orderapi.ts';
+import { FormProduct } from '../type/product.ts';
+import { useAuth, User } from '../component/AuthContext.tsx';
 import { Link } from 'react-router-dom';
 
 const Productdetail: React.FC = () => {

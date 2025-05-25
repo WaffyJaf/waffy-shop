@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
-import { getProducts } from '../api/productapi';
-import { addProductToCart } from '../api/orderapi';
-import { FormProduct } from '../type/product';
-import { useAuth, User } from '../component/AuthContext';
+import Navbar from '../component/Navbar.tsx';
+import { getProducts } from '../api/productapi.ts';
+import { addProductToCart } from '../api/orderapi.ts';
+import { FormProduct } from '../type/product.ts';
+import { useAuth, User } from '../component/AuthContext.tsx';
 
 const AllProductsPage: React.FC = () => {
   const [products, setProducts] = useState<FormProduct[]>([]);

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Navbar from '../component/Navbar';
-import { useAuth } from '../component/AuthContext';
-import { getCartItems, updateCartItemQuantity, removeCartItem, createOrder } from '../api/orderapi';
+import Navbar from '../component/Navbar.tsx';
+import { useAuth } from '../component/AuthContext.tsx';
+import { getCartItems, updateCartItemQuantity, removeCartItem, createOrder } from '../api/orderapi.ts';
 
 interface CartItem {
   id: string;
@@ -23,8 +23,8 @@ const Cart: React.FC = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]); // Track selected item IDs
-  const [selectAll, setSelectAll] = useState(false); // Track "select all" state
+  const [selectedItems, setSelectedItems] = useState<string[]>([]); 
+  const [selectAll, setSelectAll] = useState(false); 
 
   useEffect(() => {
     if (!user || !user.user_id) {
@@ -45,7 +45,6 @@ const Cart: React.FC = () => {
       try {
         const data = await getCartItems(user.user_id);
         setCartItems(data);
-        // Initially, select all items
         setSelectedItems(data.map((item: CartItem) => item.id));
         setSelectAll(true);
       } catch (error) {

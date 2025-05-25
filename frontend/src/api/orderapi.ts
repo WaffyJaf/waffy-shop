@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { CartItem } from '../type/cart';
-import {  Order } from '../type/product';
+import { CartItem } from '../type/cart.ts';
+import {  Order } from '../type/product.ts';
 
 export const addProductToCart = async (userId: number, productId: number, quantity: number) => {
   const response = await axios.post('http://localhost:3000/order/addcart', {

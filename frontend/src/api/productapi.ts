@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FormProduct , AddProductResponse} from '../type/product'
+import {FormProduct , AddProductResponse} from '../type/product.ts'
 
 
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AuthResponse , UserRole,User } from '../type/user';
+import { AuthResponse , UserRole,User } from '../type/user.ts';
 
 
 export const updateUserRole = async (userId: number, role: UserRole): Promise<AuthResponse> => {
