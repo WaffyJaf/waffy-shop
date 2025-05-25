@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AddProducts, uploadImage } from '../api/productapi';
-import { FormProduct } from '../type/product.ts';
+import { FormProduct } from '../type/product';
 import Swal from 'sweetalert2';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { getAllCategories, Category } from '../api/categoryapi.ts';
-import Navbar from '../component/Navbar.tsx';
+import { getAllCategories, Category } from '../api/categoryapi';
+import Navbar from '../component/Navbar';
 
 const AddProductPage: React.FC = () => {
   const { 
