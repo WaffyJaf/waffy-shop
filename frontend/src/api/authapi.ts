@@ -4,7 +4,7 @@ import { RegisterData, LoginData, AuthResponse } from '../type/user.ts';
 export const registerUser = async (data: RegisterData): Promise<AuthResponse> => {
   try {
     console.log('Register request data:', data);
-    const response = await axios.post('http://localhost:3000/auth/register', data, {
+    const response = await axios.post('https://waffy-shop-backend.onrender.com/api/auth/register', data, {
       withCredentials: true,
     });
     console.log('Register response:', response.data);
@@ -21,7 +21,7 @@ export const registerUser = async (data: RegisterData): Promise<AuthResponse> =>
 export const loginUser = async (data: LoginData): Promise<AuthResponse> => {
   try {
     console.log('Login request data:', data);
-    const response = await axios.post('http://localhost:3000/auth/login', data, {
+    const response = await axios.post('https://waffy-shop-backend.onrender.com/api/auth/login', data, {
       withCredentials: true,
     });
     console.log('loginUser - API response:', response.data);
